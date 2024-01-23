@@ -1074,19 +1074,22 @@ void LiveEdit::PatchScript(Isolate* isolate, Handle<Script> script,
 void LiveEdit::CompareStrings(Isolate* isolate, Handle<String> s1,
                               Handle<String> s2,
                               std::vector<SourceChangeRange>* diffs) {
-  s1 = String::Flatten(isolate, s1);
-  s2 = String::Flatten(isolate, s2);
+  std::cout<< "s1.length = "<< s1->length() <<" s2.length = " << s2->length()<<std::endl;
+  diffs->emplace_back(SourceChangeRange{0,0,0,s2->length()});
+  return;
+  // s1 = String::Flatten(isolate, s1);
+  // s2 = String::Flatten(isolate, s2);
 
-  LineEndsWrapper line_ends1(isolate, s1);
-  LineEndsWrapper line_ends2(isolate, s2);
+  // LineEndsWrapper line_ends1(isolate, s1);
+  // LineEndsWrapper line_ends2(isolate, s2);
 
-  LineArrayCompareInput input(s1, s2, line_ends1, line_ends2);
-  TokenizingLineArrayCompareOutput output(isolate, line_ends1, line_ends2, s1,
-                                          s2, diffs);
+  // LineArrayCompareInput input(s1, s2, line_ends1, line_ends2);
+  // TokenizingLineArrayCompareOutput output(isolate, line_ends1, line_ends2, s1,
+  //                                         s2, diffs);
 
-  NarrowDownInput(&input, &output);
+  // NarrowDownInput(&input, &output);
 
-  Comparator::CalculateDifference(&input, &output);
+  // Comparator::CalculateDifference(&input, &output);
 }
 
 int LiveEdit::TranslatePosition(const std::vector<SourceChangeRange>& diffs,
