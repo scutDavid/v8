@@ -2299,6 +2299,8 @@ v8_source_set("v8_base_without_compiler") {
     "src/debug/interface-types.h",
     "src/debug/liveedit.cc",
     "src/debug/liveedit.h",
+    "src/debug/liveedit-diff.cc",
+    "src/debug/liveedit-diff.h",
     "src/deoptimizer/deoptimize-reason.cc",
     "src/deoptimizer/deoptimize-reason.h",
     "src/deoptimizer/deoptimizer.cc",

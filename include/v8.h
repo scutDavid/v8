@@ -12040,4 +12040,20 @@ size_t SnapshotCreator::AddData(Local<T> object) {
 
 }  // namespace v8
 
+
+
+#define HAS_ARRAYBUFFER_NEW_WITHOUT_STL 1
+
+namespace v8
+{
+// do not new two ArrayBuffer with the same data and length
+V8_EXPORT Local<ArrayBuffer> ArrayBuffer_New_Without_Stl(Isolate* isolate, 
+      void* data, size_t byte_length, v8::BackingStore::DeleterCallback deleter,
+      void* deleter_data);
+V8_EXPORT Local<ArrayBuffer> ArrayBuffer_New_Without_Stl(Isolate* isolate, 
+      void* data, size_t byte_length);
+V8_EXPORT void* ArrayBuffer_Get_Data(Local<ArrayBuffer> array_buffer, size_t &byte_length);
+V8_EXPORT void* ArrayBuffer_Get_Data(Local<ArrayBuffer> array_buffer);
+}
+
 #endif  // INCLUDE_V8_H_

@@ -39,6 +39,10 @@
 #include "src/snapshot/snapshot.h"
 #include "src/wasm/wasm-debug.h"
 #include "src/wasm/wasm-objects-inl.h"
+#if V8_OS_WIN
+#include <chrono>
+#include <fstream>
+#endif
 
 namespace v8 {
 namespace internal {
@@ -1956,7 +1960,23 @@ bool Debug::SetScriptSource(Handle<Script> script, Handle<String> source,
   DebugScope debug_scope(this);
   feature_tracker()->Track(DebugFeatureTracker::kLiveEdit);
   running_live_edit_ = true;
+#if V8_OS_WIN
+  auto start = base::Time::Now().ToJsTime();
+#endif
   LiveEdit::PatchScript(isolate_, script, source, preview, result);
+#if V8_OS_WIN
+  std::ofstream outputFile("C:/Users/JSHotReloadRecord.txt");
+  if (outputFile.is_open())
+  {
+    auto end = base::Time::Now().ToJsTime();
+     auto duration = (end - start) / 1000.0f;
+    std::time_t seconds = static_cast<std::time_t>(start / 1000);
+    std::tm* localTm = std::localtime(&seconds);
+    char* data = std::asctime(localTm);
+    outputFile << "hotreload begin time：" << data <<" hotreload cost: " << duration << " sec" << " result ： "<< result->status << std::endl;
+    outputFile.close();
+  }
+#endif
   running_live_edit_ = false;
   return result->status == debug::LiveEditResult::OK;
 }
